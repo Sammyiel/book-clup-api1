@@ -80,7 +80,7 @@ export async function viewAllMembers(req, res) {
 export async function updateMember(req, res) {
 
     try {
-        let member = await Member.update({ where: { member_id: req.params.id } });
+        let member = await Member.update(req.body, { where: { member_id: req.params.id } });
         if (member) {
             res.status(200).json({
                 options: { multi: true },

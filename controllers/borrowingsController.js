@@ -79,7 +79,7 @@ export async function viewAllRecords(req, res) {
 //Update a borrowing record
 export async function updateBorrowing(req, res) {
     try {
-        let theResource = await Borrowings.update({
+        let theResource = await Borrowings.update(req.body, {
             where: { borrow_id: req.params.id }
         });
         if (theResource) {

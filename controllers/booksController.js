@@ -79,7 +79,7 @@ export async function viewAllBooks(req, res) {
 //Update book record
 export async function updateBook(req, res) {
     try {
-        let theResource = await Books.update({
+        let theResource = await Books.update(req.body, {
             where: { book_id: req.params.id }
         });
         if (theResource) {
