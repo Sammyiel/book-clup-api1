@@ -2,36 +2,22 @@ import Borrowings from "../models/borrowings.model.js";
 
 
 //Add a Borrow record
-export async function addRecord(req, res) {
+export async function addBorrowing(req, res) {
     try {
-        let borrow = await Borrowings.findOne({ where: { member_name: req.body.member_name, member_id: req.body.member_id, book_id: req.body.book_id, book_title: req.body.book_title, publish_date: req.body.publish_date } })
-        if (!borrow) {
-            return res.status(401).json({
-                status: "failed",
-                message: "No Borrower with that member_name."
+        let borrowing = await Borrowings.create(req.body);
+        if (borrowing) {
+            res.status(200).json({
+                success: true,
+                message: 'Borrowing record created successfully',
+                data: borrowing
+            })
+        } else {
+            res.status(200).json({
+                success: true,
+                message: 'Borrowing record could not be created at this time'
             })
         }
-        bcrypt.compare(req.body.member_name, member_name, req.body.member_id, member_id, req.body.book_id, book_id, req.body.book_title, book_title, req.body.publish_date).then(response => {
-            if (!response) {
-                return res.status(401).json({
-                    status: "failed",
-                    message: "Authentication Failed: Incorrect password."
-                })
-            }
-
-            let authToken = jwt.sign({ email_address: user.email_address, user_id: user.user_id },
-                process.env.AUTH_KEY, { expiresIn: "1h" });
-            return res.status(200).json({
-                status: true,
-                message: "User authentication successful",
-                user: { member_name: req.body.member_name, member_id: req.body.member_id, book_id: req.body.book_id, book_title: req.body.book_title, publish_date: req.body.publish_date, user_id: borro.borrow_id },
-                token: authToken,
-                expiresIn: 3600
-            })
-        })
-
     } catch (err) {
-        member_name,
         console.log(err);
         res.status(500).json({
             success: false,
@@ -39,7 +25,6 @@ export async function addRecord(req, res) {
         })
     }
 }
-
 
 //View a borrow record
 export async function viewRecord(req, res) {
@@ -92,28 +77,55 @@ export async function viewAllRecords(req, res) {
 }
 
 //Update a borrowing record
-export async function updateRecord(req, res) {
-
+export async function updateBorrowing(req, res) {
     try {
-        let borrow = await Borrowings.update({ where: { borrow_id: req.params.id } });
-        if (borrow) {
-            res.status(200).json({
-                options: { multi: true },
-                then: { nom: req.body.nom },
-                //data: nom.splice(0, +1),
-                message: 'borrow record updated successfully'
+        let theResource = await Borrowings.update({
+            where: { borrow_id: req.params.id }
+        });
+        if (theResource) {
+            res.json({
+                success: true,
+                message: "Borrowing records updated successfully",
+                data: theResource
             })
         } else {
-            res.status(200).json({
-                success: true,
-                message: 'record could not be updated at this time'
+            res.json({
+                success: false,
+                message: "Borrowing records could not be updated",
             })
         }
     } catch (err) {
         console.log(err);
         res.status(500).json({
             success: false,
-            message: "Oopss! Something is wrong..."
+            message: "Oops! Something went wrong..."
+        })
+    }
+}
+
+// Delete borrow records
+export async function deleteBorrowing(req, res) {
+    try {
+        let borrow_id = req.params.id;
+        let toBeDeleted = await Borrowings.destroy({
+            where: { book_id: borrow_id }
+        });
+        if (toBeDeleted) {
+            res.json({
+                success: true,
+                message: `Resource with ID number ${borrow_id} is deleted successfully`,
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "Resource(s) could not be deleted",
+            })
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Oops! Something went wrong..."
         })
     }
 }

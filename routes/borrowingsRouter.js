@@ -1,11 +1,11 @@
 import express from "express";
-import { updateRecord, addRecord, viewRecord, viewAllRecords } from '../controllers/borrowingsController.js'
+import { updateBorrowing, addBorrowing, viewRecord, viewAllRecords, addBorrowing, updateBorrowing, deleteBorrowing } from '../controllers/borrowingsController.js'
 // import { authenticate } from '../middlewares/auth.js';
 
 const borrowingsRouter = express.Router();
 
 //Add a Borrowing Record
-borrowingsRouter.post("/", addRecord);
+borrowingsRouter.post("/", addBorrowing);
 
 //View a record borrowings/:id
 borrowingsRouter.get("/:id", viewRecord);
@@ -14,7 +14,10 @@ borrowingsRouter.get("/:id", viewRecord);
 borrowingsRouter.get("/", viewAllRecords);
 
 //Update a record borrowings/
-borrowingsRouter.put("/:id", updateRecord);
+borrowingsRouter.put("/:id", updateBorrowing);
+
+// Delete a record borrowings/
+borrowingsRouter.put("/:id", deleteBorrowing);
 
 
 export default borrowingsRouter;
