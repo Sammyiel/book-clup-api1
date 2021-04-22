@@ -1,5 +1,5 @@
 import express from "express";
-import { updateBorrowing, addBorrowing, viewRecord, viewAllRecords, addBorrowing, updateBorrowing, deleteBorrowing } from '../controllers/borrowingsController.js'
+import { viewRecord, viewAllRecords, addBorrowing, updateBorrowing, deleteBorrowing } from '../controllers/borrowingsController.js'
 // import { authenticate } from '../middlewares/auth.js';
 
 const borrowingsRouter = express.Router();
